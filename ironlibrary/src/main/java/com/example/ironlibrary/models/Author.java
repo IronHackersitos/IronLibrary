@@ -4,6 +4,8 @@ package com.example.ironlibrary.models;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
 
+import java.util.*;
+
 @Entity
 @Table(name="Authors")
 public class Author {
@@ -14,10 +16,6 @@ public class Author {
     private String email;
     @OneToMany(mappedBy="author")
     private List<Book> authorBook;
-    @ManyToOne
-    @JoinColumn(name = "library_id")
-    private Library library;
-    
     public Author(){}
 
     public Author(String name, String email, List<Book> authorBook) {
@@ -56,13 +54,5 @@ public class Author {
 
     public void setAuthorBook(List<Book> authorBook) {
         this.authorBook = authorBook;
-    }
-
-    public Library getLibrary() {
-        return library;
-    }
-
-    public void setLibrary(Library library) {
-        this.library = library;
     }
 }

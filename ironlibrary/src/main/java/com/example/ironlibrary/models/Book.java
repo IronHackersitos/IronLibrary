@@ -16,6 +16,9 @@ public class Book {
     @JoinColumn(name="author_id")
     private Author author;
 
+    @OneToOne(mappedBy="book")
+    private Issue issue;
+
     public Book(){}
 
     public Book(String isbn, String title, String category, int quantity) {
@@ -50,21 +53,21 @@ public class Book {
         this.category = category;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
     public Author getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(Author author) {
-        Author = author;
+        this.author = author;
     }
 }
 
-}
+

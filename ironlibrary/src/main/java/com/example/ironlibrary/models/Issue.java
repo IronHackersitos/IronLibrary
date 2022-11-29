@@ -5,18 +5,19 @@ import jakarta.persistence.*;
 @Entity
 public class Issue {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issueId;
 
     private String issueDate;
     private String returnDate;
 
     @OneToOne
-    @JoinColumn(name="student_id")
-    private Student issueStudent;
+    @JoinColumn(name = "student_id")
+    private Student student;
+   
     @OneToOne
-    @JoinColumn(name="book_id")
-    private Book issueBook;
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     public Issue() {
     }
@@ -24,8 +25,8 @@ public class Issue {
     public Issue(String issueDate, String returnDate, Student issueStudent, Book issueBook) {
         this.issueDate = issueDate;
         this.returnDate = returnDate;
-        this.issueStudent = issueStudent;
-        this.issueBook = issueBook;
+        this.student = issueStudent;
+        this.book = issueBook;
     }
 
     public Integer getIssueId() {
@@ -52,19 +53,19 @@ public class Issue {
         this.returnDate = returnDate;
     }
 
-    public Student getIssueStudent() {
-        return issueStudent;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setIssueStudent(Student issueStudent) {
-        this.issueStudent = issueStudent;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public Book getIssueBook() {
-        return issueBook;
+    public Book getBook() {
+        return book;
     }
 
-    public void setIssueBook(Book issueBook) {
-        this.issueBook = issueBook;
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

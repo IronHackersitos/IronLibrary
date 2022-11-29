@@ -8,16 +8,10 @@ public class Student {
     @Id
     private String usn;
     private String name;
-
-    @OneToOne (mappedBy = "issue")
-    private List<Issue> issue;
-
-
-    public Student() {
-
-    }
-
-
+    
+    @OneToOne(mappedBy="student")
+    private Issue issue;
+    public Student() {}
     public Student(String usn, String name) {
         this.usn = usn;
         this.name = name;
