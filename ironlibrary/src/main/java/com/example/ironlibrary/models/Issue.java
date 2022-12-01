@@ -3,6 +3,8 @@ package com.example.ironlibrary.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Issue {
@@ -10,8 +12,8 @@ public class Issue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issueId;
 
-    private LocalDate issueDate;
-    private LocalDate returnDate;
+    private Date issueDate;
+    private Date returnDate;
 
     @OneToOne
     @JoinColumn(name = "student_id")
@@ -24,7 +26,7 @@ public class Issue {
     public Issue() {
     }
 
-    public Issue(LocalDate issueDate, LocalDate returnDate, Student issueStudent, Book issueBook) {
+    public Issue(Date issueDate, Date returnDate, Student issueStudent, Book issueBook) {
         this.issueDate = issueDate;
         this.returnDate = returnDate;
         this.student = issueStudent;
@@ -39,19 +41,19 @@ public class Issue {
         this.issueId = issueId;
     }
 
-    public LocalDate getIssueDate() {
+    public Date getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(LocalDate issueDate) {
+    public void setIssueDate(Date issueDate) {
         this.issueDate = issueDate;
     }
 
-    public LocalDate getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 

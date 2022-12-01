@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface IssueRepository extends JpaRepository<Issue,Integer>{
     List<Issue> findByStudentUsn(String usn);
-
 }

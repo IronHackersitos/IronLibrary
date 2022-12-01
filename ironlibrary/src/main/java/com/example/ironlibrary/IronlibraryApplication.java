@@ -14,10 +14,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cglib.core.Local;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @SpringBootApplication
 public class IronlibraryApplication implements CommandLineRunner {
@@ -25,7 +26,7 @@ public class IronlibraryApplication implements CommandLineRunner {
     @Autowired
     BookRepository bookRepository;
     @Autowired
-    AuthorRepository  authorRepository;
+    AuthorRepository authorRepository;
     @Autowired
     IssueRepository issueRepository;
     @Autowired
@@ -70,51 +71,50 @@ public class IronlibraryApplication implements CommandLineRunner {
                     String bookAuthor = saveString(input);
                     System.out.println("Which is the author's email?");
                     String bookAuthorEmail = saveString(input);
-                    Author author = new Author(bookAuthor, bookAuthorEmail);
-                    book.setAuthor(author);
-                    authorRepository.save(author);
+                    if (authorRepository.findByName(bookAuthor).isPresent()) {
+                        book.setAuthor(authorRepository.findByName(bookAuthor).get());
+                    } else {
+                        book.setAuthor(authorRepository.save(new Author(bookAuthor, bookAuthorEmail)));
+                    }
                     bookRepository.save(book);
                     break;
                 case 2:
                     System.out.println("Which title are you looking for?");
                     bookTitle = saveString(input);
-                    if(bookRepository.findByTitle(bookTitle).isPresent()) {
+                    if (bookRepository.findByTitle(bookTitle).isPresent()) {
                         Book bookDB = bookRepository.findByTitle(bookTitle).get();
-                        System.out.printf(String.format("%-20s%-20s%-20s%-20s\n", "Book ISBN","Book Title","Category","No of Books"));
+                        System.out.printf(String.format("%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books"));
                         System.out.printf(bookDB.toString() + "\n");
-                    }
-                    else System.err.println("That book doesn't exist in our DB");
+                    } else System.err.println("That book doesn't exist in our DB");
                     break;
                 case 3:
                     System.out.println("Which category are you looking for?");
                     bookCategory = saveString(input);
-                    if(bookRepository.findByCategory(bookCategory).isEmpty() == false) {
+                    if (bookRepository.findByCategory(bookCategory).isEmpty() == false) {
                         List<Book> books = bookRepository.findByCategory(bookCategory);
-                        System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n","Book ISBN","Book Title","Category","No of Books","Author Name","Author email\n");
-                        for(Book bookItem : books){
-                            System.out.printf(bookItem.toString());
-                            System.out.println(bookItem.getAuthor().toString());
+                        System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books", "Author Name", "Author email");
+                        for (Book bookItem : books) {
+                            System.out.printf(bookItem.toString() + bookItem.getAuthor().toString() + "\n");
                         }
-                    }
-                    else System.err.println("That category doesn't exist in our DB or there are no books in it.");
+                    } else System.err.println("That category doesn't exist in our DB or there are no books in it.");
                     break;
                 case 4:
                     System.out.println("Which author are you looking for?");
                     bookAuthor = saveString(input);
-                    if(authorRepository.findByName(bookAuthor).isEmpty() == false) {
+                    if (authorRepository.findByName(bookAuthor).isEmpty() == false) {
                         List<Book> books = bookRepository.findByAuthor(authorRepository.findByName(bookAuthor).get());
-                        System.out.println(books.toString());
-                    }
-                    else System.err.println("That author doesn't exist in our DB.");
+                        System.out.printf(String.format("%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books"));
+                        for (Book bookItem : books) {
+                            System.out.printf(bookItem.toString() + "\n");
+                        }
+                    } else System.err.println("That author doesn't exist in our DB.");
                     break;
                 case 5:
-                    System.out.println("Here's a list with all our books and their author");
-                    //System.out.println("Book ISBN          Book Title          Category          No of Books          Author Name          Author email");
+                    System.out.println("Here's a list with all our books and their author\n");
                     List<Book> books = bookRepository.findAll();
-                    for(Book bookItem : books){
-
-                        System.out.printf(bookItem.toString());
-                        System.out.printf(bookItem.getAuthor().toString());
+                    System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books", "Author Name", "Author email");
+                    for (Book bookItem : books) {
+                        System.out.printf(bookItem.toString() + bookItem.getAuthor().toString() + "\n");
                     }
                     break;
                 case 6:
@@ -124,29 +124,38 @@ public class IronlibraryApplication implements CommandLineRunner {
                     String studentUsn = saveString(input);
                     System.out.println("Which is the student's name");
                     String studentName = saveString(input);
-                    if(bookRepository.findById(bookISBN).isPresent()){
+                    if (bookRepository.findById(bookISBN).isPresent()) {
                         book = bookRepository.findById(bookISBN).get();
                         Student student = new Student(studentUsn, studentName);
                         studentRepository.save(student);
-                        Issue issue = new Issue(LocalDate.now(), LocalDate.now().plusDays(7), student, book);
+                        //Current date
+                        Date now = new Date();
+                        //Setting return date
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(now);
+                        cal.add(Calendar.DATE,7);
+                        Date returnDate = cal.getTime();
+                        //Creating Issue
+                        Issue issue = new Issue(now, returnDate, student, book);
                         issueRepository.save(issue);
-                    }
-                    else System.err.println("The book doesn't exist in our DB.");
+                        //Formatting return date
+                        SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+                        String dateStr = formatter.format(returnDate);
+                        System.out.println("Book issued. Return date: " + dateStr);
+                    } else System.err.println("The book doesn't exist in our DB.");
                     break;
                 case 7:
                     System.out.println("Which students USN do you want to look up?");
                     studentUsn = saveString(input);
-                    if(studentRepository.findById(studentUsn).isPresent()){
+                    if (studentRepository.findById(studentUsn).isPresent()) {
                         List<Issue> issuesStudent = issueRepository.findByStudentUsn(studentUsn);
-                        for (Issue issue : issuesStudent){
-                            issue.getBook().getTitle().toString();
-                            System.out.println("\n");
-                            issue.getStudent().toString();
-                            System.out.println("\n");
-                            issue.getReturnDate().toString();
+                        System.out.printf(String.format("%-20s%-20s%-20s\n", "Book Title", "Student Name", "Return Date"));
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                        for (Issue issue : issuesStudent) {
+                            String dateStr = formatter.format(issue.getReturnDate());
+                            System.out.printf("%-20s%-20s%-20s\n", issue.getBook().getTitle(), issue.getStudent().getName(), dateStr);
                         }
-                    }
-                    else System.err.println("That student doesn't exist in our DB");
+                    } else System.err.println("That student doesn't exist in our DB");
                     break;
                 case 8:
                     System.out.println("C ya!!!");

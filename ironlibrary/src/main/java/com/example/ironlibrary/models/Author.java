@@ -57,13 +57,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return  String.format("%-30s%-30s%\n", name, email);
+        return  String.format("%-20s%-20s", name, email);
     }
-
-   /* @Override
-    public String toString() {
-        return "Author{" +
-                "authorBook=" + authorBook +
-                '}';
-    }*/
+    
 }
