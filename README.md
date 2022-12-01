@@ -8,7 +8,7 @@ This project's main goal is to create a programme for a library system that can 
 - SpringBoot
 - JPA
 
-##Required Methods
+## Required Methods
 - Add a book: This action is responsible of adding a book and its author in the system. The user will be prompted to enter the details of both the book and the author in the following format
 - Search book by title: This action is responsible for searching a book by title.
 - Search book by category: This action is responsible for searching a book by category.
