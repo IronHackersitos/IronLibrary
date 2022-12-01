@@ -2,14 +2,16 @@ package com.example.ironlibrary.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issueId;
 
-    private String issueDate;
-    private String returnDate;
+    private LocalDate issueDate;
+    private LocalDate returnDate;
 
     @OneToOne
     @JoinColumn(name = "student_id")
@@ -22,7 +24,7 @@ public class Issue {
     public Issue() {
     }
 
-    public Issue(String issueDate, String returnDate, Student issueStudent, Book issueBook) {
+    public Issue(LocalDate issueDate, LocalDate returnDate, Student issueStudent, Book issueBook) {
         this.issueDate = issueDate;
         this.returnDate = returnDate;
         this.student = issueStudent;
@@ -37,19 +39,19 @@ public class Issue {
         this.issueId = issueId;
     }
 
-    public String getIssueDate() {
+    public LocalDate getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(String issueDate) {
+    public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
-    public String getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(String returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -67,5 +69,10 @@ public class Issue {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @Override
+    public String toString() {
+        return returnDate.toString();
     }
 }

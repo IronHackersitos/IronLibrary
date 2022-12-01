@@ -26,7 +26,6 @@ public class Book {
         this.title = title;
         this.category = category;
         this.quantity = quantity;
-
     }
 
     public String getIsbn() {
@@ -68,6 +67,13 @@ public class Book {
     public void setAuthor(Author author) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-20s%-20s%-20s%-20d", isbn, title, category, quantity);
+    }
+    
+    
 }
 
 

@@ -18,10 +18,9 @@ public class Author {
     private List<Book> authorBook;
     public Author(){}
 
-    public Author(String name, String email, List<Book> authorBook) {
+    public Author(String name, String email) {
         this.name = name;
         this.email = email;
-        this.authorBook = authorBook;
     }
 
     public Long getAuthorId() {
@@ -55,4 +54,16 @@ public class Author {
     public void setAuthorBook(List<Book> authorBook) {
         this.authorBook = authorBook;
     }
+
+    @Override
+    public String toString() {
+        return  String.format("%-30s%-30s%\n", name, email);
+    }
+
+   /* @Override
+    public String toString() {
+        return "Author{" +
+                "authorBook=" + authorBook +
+                '}';
+    }*/
 }
