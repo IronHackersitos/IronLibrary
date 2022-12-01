@@ -120,39 +120,59 @@ public class IronlibraryApplication implements CommandLineRunner {
                 case 6:
                     System.out.println("Which is book's ISBN?");
                     bookISBN = saveString(input);
+                    //Checking the book exists in our DB
+                    if (bookRepository.findById(bookISBN).isPresent() == false) {
+                        System.err.println("The book doesn't exist in our DB.");
+                        break;
+                    } else if (bookRepository.findById(bookISBN).get().getIssue() != null) {
+                        System.err.println("This book has already been issued, please enter another ISBN.");
+                        break;
+                    }
+                    //Finding book and setting possible return date
+                    book = bookRepository.findById(bookISBN).get();
+                    Date now = new Date();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(now);
+                    cal.add(Calendar.DATE, 7);
+                    Date returnDate = cal.getTime();
+                    SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+                    String dateStr = formatter.format(returnDate);
+
+                    //Checking the student already exists in our DB
                     System.out.println("Which is the student's usn?");
                     String studentUsn = saveString(input);
-                    System.out.println("Which is the student's name");
-                    String studentName = saveString(input);
-                    if (bookRepository.findById(bookISBN).isPresent()) {
-                        book = bookRepository.findById(bookISBN).get();
+                    if (studentRepository.findById(studentUsn).isPresent()) {
+                        //Creating Issue
+                        Issue issue = new Issue(now, returnDate, studentRepository.findById(studentUsn).get(), book);
+                        issueRepository.save(issue);
+                        book.setIssue(issue);
+                        bookRepository.save(book);
+                        System.out.println("Book issued. Return date: " + dateStr);
+                        break;
+
+                    } else {
+                        System.out.println("Student isn't saved in our DB. One will be created with previous USN");
+                        System.out.println("Enter name:");
+                        String studentName = saveString(input);
                         Student student = new Student(studentUsn, studentName);
                         studentRepository.save(student);
-                        //Current date
-                        Date now = new Date();
-                        //Setting return date
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(now);
-                        cal.add(Calendar.DATE,7);
-                        Date returnDate = cal.getTime();
                         //Creating Issue
                         Issue issue = new Issue(now, returnDate, student, book);
                         issueRepository.save(issue);
-                        //Formatting return date
-                        SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-                        String dateStr = formatter.format(returnDate);
+                        book.setIssue(issue);
+                        bookRepository.save(book);
                         System.out.println("Book issued. Return date: " + dateStr);
-                    } else System.err.println("The book doesn't exist in our DB.");
-                    break;
+                        break;
+                    }
                 case 7:
                     System.out.println("Which students USN do you want to look up?");
                     studentUsn = saveString(input);
                     if (studentRepository.findById(studentUsn).isPresent()) {
                         List<Issue> issuesStudent = issueRepository.findByStudentUsn(studentUsn);
                         System.out.printf(String.format("%-20s%-20s%-20s\n", "Book Title", "Student Name", "Return Date"));
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
                         for (Issue issue : issuesStudent) {
-                            String dateStr = formatter.format(issue.getReturnDate());
+                            dateStr = formatter.format(issue.getReturnDate());
                             System.out.printf("%-20s%-20s%-20s\n", issue.getBook().getTitle(), issue.getStudent().getName(), dateStr);
                         }
                     } else System.err.println("That student doesn't exist in our DB");
@@ -166,11 +186,11 @@ public class IronlibraryApplication implements CommandLineRunner {
 
             }
         }
+
     }
 
     //MENU
     private static void showMenu() {
-        //System.out.println("Select an option:");
         System.out.println("1. Add a book to library");
         System.out.println("2. Search book by title");
         System.out.println("3. Search book by category");

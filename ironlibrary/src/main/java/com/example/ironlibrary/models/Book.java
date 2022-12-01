@@ -68,6 +68,14 @@ public class Book {
         this.author = author;
     }
 
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
+    }
+
     @Override
     public String toString() {
         return String.format("%-20s%-20s%-20s%-20d", isbn, title, category, quantity);
