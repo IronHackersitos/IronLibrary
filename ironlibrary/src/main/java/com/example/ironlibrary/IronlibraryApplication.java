@@ -21,7 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @SpringBootApplication
-public class IronlibraryApplication implements CommandLineRunner {
+//public class IronlibraryApplication implements CommandLineRunner {
+public class IronlibraryApplication {
 
     @Autowired
     BookRepository bookRepository;
@@ -36,7 +37,7 @@ public class IronlibraryApplication implements CommandLineRunner {
         SpringApplication.run(IronlibraryApplication.class, args);
     }
 
-    @Override
+    /*@Override
     public void run(String... args) throws Exception {
 
         System.out.println("Welcome to IRONLIBRARY by IRONHACKERSITOS");
@@ -187,7 +188,7 @@ public class IronlibraryApplication implements CommandLineRunner {
             }
         }
 
-    }
+    }*/
 
     //MENU
     private static void showMenu() {

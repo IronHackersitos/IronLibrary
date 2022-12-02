@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Issue {
@@ -15,7 +16,7 @@ public class Issue {
     private Date issueDate;
     private Date returnDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
    
@@ -76,5 +77,17 @@ public class Issue {
     @Override
     public String toString() {
         return returnDate.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Issue issue)) return false;
+        return Objects.equals(getIssueId(), issue.getIssueId()) && Objects.equals(getIssueDate(), issue.getIssueDate()) && Objects.equals(getReturnDate(), issue.getReturnDate()) && Objects.equals(getStudent(), issue.getStudent()) && Objects.equals(getBook(), issue.getBook());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIssueId(), getIssueDate(), getReturnDate(), getStudent(), getBook());
     }
 }

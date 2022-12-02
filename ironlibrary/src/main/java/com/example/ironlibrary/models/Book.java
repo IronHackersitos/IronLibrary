@@ -2,6 +2,8 @@ package com.example.ironlibrary.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 // @Table(name = "books")
 public class Book {
@@ -26,6 +28,14 @@ public class Book {
         this.title = title;
         this.category = category;
         this.quantity = quantity;
+    }
+
+    public Book(String isbn, String title, String category, Integer quantity, Author author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.category = category;
+        this.quantity = quantity;
+        this.author = author;
     }
 
     public String getIsbn() {
@@ -80,8 +90,18 @@ public class Book {
     public String toString() {
         return String.format("%-20s%-20s%-20s%-20d", isbn, title, category, quantity);
     }
-    
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return Objects.equals(getIsbn(), book.getIsbn()) && Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getCategory(), book.getCategory()) && Objects.equals(getQuantity(), book.getQuantity()) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIsbn(), getTitle(), getCategory(), getQuantity(), getAuthor(), getIssue());
+    }
 }
 
 

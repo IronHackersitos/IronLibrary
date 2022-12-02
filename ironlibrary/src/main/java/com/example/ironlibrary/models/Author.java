@@ -14,8 +14,8 @@ public class Author {
     private Long authorId;
     private String name;
     private String email;
-    @OneToMany(mappedBy="author")
-    private List<Book> authorBook;
+    @OneToMany(mappedBy="author", cascade = CascadeType.ALL)
+    private List<Book> authorBook = new ArrayList<>();
     public Author(){}
 
     public Author(String name, String email) {
