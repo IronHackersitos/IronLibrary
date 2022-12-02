@@ -10,7 +10,7 @@ This project's main goal is to create a programme for a library system that can 
 
 ## Class diagram
 
-![image](https://user-images.githubusercontent.com/97543256/205185215-e33afe52-76d3-4117-b2e8-58fe05b20d31.png)
+![image](https://user-images.githubusercontent.com/97543256/205185504-45fa6ed3-06d8-42b3-899f-488608439452.png)
 
 
 ## Required Methods
