@@ -1,12 +1,17 @@
 # IronLibrary
 This project's main goal is to create a programme for a library system that can manage books, authors, issues and students. It's required to generate a Database with the necessary tables according to the previous categories.
 
-## Main technologies used:
+## Main technologies used
 - Java
 - Unit testing
 - Spring
 - SpringBoot
 - JPA
+
+## Class diagram
+
+![image](https://user-images.githubusercontent.com/97543256/205185107-e8b9c0f2-f2c2-410a-9a16-633c8afdd196.png)
+
 
 ## Required Methods
 - Add a book: This action is responsible of adding a book and its author in the system. The user will be prompted to enter the details of both the book and the author in the following format
