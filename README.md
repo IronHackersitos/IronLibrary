@@ -15,7 +15,7 @@ Run the programme in Spring and follow the instructions. Menu is based on standa
 
 ## Class diagram
 
-![image](https://user-images.githubusercontent.com/97543256/205185504-45fa6ed3-06d8-42b3-899f-488608439452.png)
+![image](https://user-images.githubusercontent.com/97543256/205352048-35051c42-d8de-4393-a856-fc276ab38944.png)
 
 
 ## Required Methods
