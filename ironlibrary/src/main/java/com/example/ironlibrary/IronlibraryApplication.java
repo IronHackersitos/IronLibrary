@@ -113,7 +113,7 @@ public class IronlibraryApplication implements CommandLineRunner {
                     } else System.err.println("That author doesn't exist in our DB.");
                     break;
                 case 5:
-                    System.out.println("Here's a list with all our books and their author\n");
+                    System.out.println("These are all our books and their author\n");
                     List<Book> books = bookRepository.findAll();
                     System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books", "Author Name", "Author email");
                     for (Book bookItem : books) {
@@ -181,12 +181,39 @@ public class IronlibraryApplication implements CommandLineRunner {
                     } else System.err.println("That student doesn't exist in our DB");
                     break;
                 case 8:
+                    //Checking if there are any issues at all
+                    List<Issue> issues = issueRepository.findAll();
+                    if (issues.size() == 0) {
+                        System.err.println("There are no issues yet.");
+                        break;
+                    }
+                    //Setting date and formatting to a string only with day month and year (no time) with current date
+                    now = new Date();
+                    formatter = new SimpleDateFormat("MMM dd yyyy");
+                    String dateStr1 = formatter.format(now);
+                    //Going through the issues list and comparing the formatted returnDate to the one of today. Saving each book in a hashmap.
+                    Map<Integer, Book> allBooksDueToday = new HashMap<>();
+                    for (Issue issue : issues) {
+                        Date returnDateDB = issue.getReturnDate();
+                        String dateStr2 = formatter.format(returnDateDB);
+                        if (dateStr1.equals(dateStr2)) {
+                            allBooksDueToday.put(issue.getIssueId(), issue.getBook());
+                        }
+                    }
+                    //After saving books due to today we can check if there is none or print them if the hashmap has books
+                    if (allBooksDueToday.size() == 0) {
+                        System.err.println("There are no books due today.");
+                        break;
+                    }
+                    System.out.printf(String.format("%-20s%-20s%-20s%-20s\n", "Book ISBN", "Book Title", "Category", "No of Books"));
+                    for (Book bookItem : allBooksDueToday.values()) {
+                        System.out.printf(bookItem.toString() + "\n");
+                    }
+                    break;
+                case 9:
                     System.out.println("C ya!!!");
                     isRunning = false;
                     break;
-                default:
-                    System.err.println("Enter only integer values");
-
             }
         }
 
@@ -201,7 +228,8 @@ public class IronlibraryApplication implements CommandLineRunner {
         System.out.println("5. List all books along with author ");
         System.out.println("6. Issue book to student");
         System.out.println("7. List books by usn");
-        System.out.println("8. Exit");
+        System.out.println("8. List books due today");
+        System.out.println("9. Exit");
     }
 
     //INPUT SAVING
@@ -246,5 +274,4 @@ public class IronlibraryApplication implements CommandLineRunner {
         }
         return num;
     }
-    
 }

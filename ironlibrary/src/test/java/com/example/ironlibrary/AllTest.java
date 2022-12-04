@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -114,19 +115,43 @@ public class AllTest {
         List<Book> booksDB = bookRepository.findAll();
         assertEquals(4, booksDB.size());
     }
- 
-   @Test
-    void shouldIssueBookToStudent_OK(){
+
+    @Test
+    void shouldIssueBookToStudent_OK() {
         Student studentDB = studentRepository.findById("123456").get();
         assertTrue(student1.equals(studentDB));
         assertTrue(student1.getUsn().equals(issue1.getStudent().getUsn()));
         assertTrue(student1.getUsn().equals(issue2.getStudent().getUsn()));
     }
-  
+
     @Test
-    void shouldListAllStudentBooks_OK(){
+    void shouldListAllStudentBooks_OK() {
         List<Issue> issuesStudent = issueRepository.findByStudentUsn("123456");
         assertEquals(2, issuesStudent.size());
+    }
+
+    @Test
+    void shouldListAllBooksDueToday_OK() {
+        //Setting a string with the fake return date of today + 7 days
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.DATE, 7);
+        Date returnDate = cal.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
+        String dateStr = formatter.format(returnDate);
+        //Getting all issues and saving in a hashMap the Books of the ones with matching returnDate to the one settled above
+        List<Issue> issues = issueRepository.findAll();
+        Map<Integer, Book> allBooksDueToday = new HashMap<>();
+        for (Issue issue : issues) {
+            Date returnDateDB = issue.getReturnDate();
+            String dateStrDB = formatter.format(returnDateDB);
+            if (dateStr.equals(dateStrDB)) {
+                allBooksDueToday.put(issue.getIssueId(), issue.getBook());
+            }
+        }
+        //List should have 2 as the day the tests are run, it's always going to be the same the books are issued.
+        assertEquals(2, allBooksDueToday.size());
     }
 }
 
