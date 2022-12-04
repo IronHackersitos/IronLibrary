@@ -7,7 +7,7 @@ Set private properties with the named schema and your password.
 Run the programme in Spring and follow the instructions. Menu is based on standard input/output.
 
 ## Testing
-In order to run tests, the <i>run(String... args)<i> in IronLibraryApplication should be commented along with the <i>implements CommandLineRunner<i>. 
+In order to run tests, the <i>run(String... args)</i> in IronLibraryApplication should be commented along with the <i>implements CommandLineRunner</i>. 
 
 ## Main technologies used
 - Java
