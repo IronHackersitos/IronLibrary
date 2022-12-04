@@ -2,12 +2,12 @@
 This project's main goal is to create a programme for a library system that can manage books, authors, issues and students. It's required to generate a Database with the necessary tables according to the previous categories.
 
 ## Instructions
-Set a MySql instance, with a schema created.
+Set a MySql instance, with a schema created called <i>ironlibrary</i>.
 Set private properties with the named schema and your password.
 Run the programme in Spring and follow the instructions. Menu is based on standard input/output.
 
 ## Testing
-In order to run tests, the <i>run(String... args)</i> in IronLibraryApplication should be commented along with the <i>implements CommandLineRunner</i>. 
+In order to run tests, the <i>public void run(String... args) throws Exception</i> in IronLibraryApplication should be commented along with the <i>implements CommandLineRunner</i> in the prototype of the function. 
 
 ## Main technologies used
 - Java
