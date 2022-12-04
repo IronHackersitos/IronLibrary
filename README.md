@@ -6,6 +6,9 @@ Set a MySql instance, with a schema created.
 Set private properties with the named schema and your password.
 Run the programme in Spring and follow the instructions. Menu is based on standard input/output.
 
+##Testing
+In order to run tests, the <italic>run(String... args)<italic> in IronLibraryApplication should be commented along with the <italic>implements CommandLineRunner<italic>. 
+
 ## Main technologies used
 - Java
 - Unit testing
@@ -17,7 +20,6 @@ Run the programme in Spring and follow the instructions. Menu is based on standa
 
 ![image](https://user-images.githubusercontent.com/97543256/205352048-35051c42-d8de-4393-a856-fc276ab38944.png)
 
-
 ## Required Methods
 - Add a book: This action is responsible of adding a book and its author in the system. The user will be prompted to enter the details of both the book and the author in the following format
 - Search book by title: This action is responsible for searching a book by title.
@@ -27,6 +29,9 @@ Run the programme in Spring and follow the instructions. Menu is based on standa
 - Issue book to student: This action is responsible for creating a student and issuing him/her the specified book. The date issued represent the current date, and the return date should be after 7 days.
 - List books by usn: This action is responsible for listing all books rented by the specified student.
 
+## Extra Method
+
+- List books to be returned today.
 
 ## Process
 - Definition of class diagram in order to divide tables between members of the team. Creation of basic structure.
